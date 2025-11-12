@@ -1,5 +1,7 @@
 import {  useContext, useEffect, useMemo, useState } from "react"
 import FatorContext from "../context/FatorContext";
+import ExibirFatores from "../components/ExibirFatores";
+import DoseTotalCard from "../components/DoseTotalCard";
 
 
 const PainelGlicemico = () => {
@@ -38,6 +40,8 @@ const PainelGlicemico = () => {
             <input type="number" name="meal-carbs" id="meal-carbs" min={0} value={carbsRefeicao} onChange={(e) => setCarbsRefeicao(e.currentTarget.value)} />
             <button onClick={handleAjusteRapido}>Ajuste Rápido</button>
             <p>Dose Corretiva: {doseCorretiva}</p>
+            <ExibirFatores />
+            <DoseTotalCard carbsRefeicao={carbsRefeicao} doseCorretiva={doseCorretiva} />
         </div>
     )
 }
