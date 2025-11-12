@@ -1,4 +1,4 @@
-import {  useEffect, useReducer, useState } from "react"
+import {  useEffect, useMemo, useReducer, useState } from "react"
 
 const fatorReducer = (state, action) => {
     const { type } = action;
@@ -19,6 +19,12 @@ const PainelGlicemico = () => {
         fic: 10,
         alvo: 100
     });
+    const FSI = 50;
+
+    const doseCorretiva = useMemo(() => {
+        if(glicemiaAtual <= controleGlicemico.alvo) return 0;
+        return (glicemiaAtual - controleGlicemico.alvo) / FSI;
+    }, [glicemiaAtual, controleGlicemico.alvo, FSI]);
 
     // console.log(currGlycemia, mealCarbs)
     const handleAjusteRapido = () => {
@@ -43,6 +49,7 @@ const PainelGlicemico = () => {
             <label htmlFor="meal-carbs">Carboidratos da Refeição:</label>
             <input type="number" name="meal-carbs" id="meal-carbs" min={0} value={carbsRefeicao} onChange={(e) => setCarbsRefeicao(e.currentTarget.value)} />
             <button onClick={handleAjusteRapido}>Ajuste Rápido</button>
+            <p>Dose Corretiva: {doseCorretiva}</p>
         </div>
     )
 }
