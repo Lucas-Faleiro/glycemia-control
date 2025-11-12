@@ -1,4 +1,4 @@
-import {  useReducer, useState } from "react"
+import {  useEffect, useReducer, useState } from "react"
 
 const fatorReducer = (state, action) => {
     const { type } = action;
@@ -26,15 +26,22 @@ const PainelGlicemico = () => {
         dispatch({type: 'SET_ALVO', payload: 90});
     }
 
-    console.log(controleGlicemico.fic, controleGlicemico.alvo);
+    useEffect(() => {
+        if (glicemiaAtual < 70) {
+            console.log('ALERTA: Hipoglicemia. Favor consumir carboidratos!');
+        }
+        console.log(`[Monitoramento] Glicemia alterada para: ${glicemiaAtual}mg/dL`);
+    }, [glicemiaAtual]);
+
+
     
 
     return (
         <div>
             <label htmlFor="curr-glycemia">Glicemia Atual:</label>
-            <input type="number" name="curr-glycemia" id="curr-glycemia" min={0} onChange={(e) => setGlicemiaAtual(e.currentTarget.value)} />
+            <input type="number" name="curr-glycemia" id="curr-glycemia" min={0} value={glicemiaAtual} onChange={(e) => setGlicemiaAtual(e.currentTarget.value)} />
             <label htmlFor="meal-carbs">Carboidratos da Refeição:</label>
-            <input type="number" name="meal-carbs" id="meal-carbs" min={0} onChange={(e) => setCarbsRefeicao(e.currentTarget.value)} />
+            <input type="number" name="meal-carbs" id="meal-carbs" min={0} value={carbsRefeicao} onChange={(e) => setCarbsRefeicao(e.currentTarget.value)} />
             <button onClick={handleAjusteRapido}>Ajuste Rápido</button>
         </div>
     )
