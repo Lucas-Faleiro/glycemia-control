@@ -1,24 +1,12 @@
-import {  useEffect, useMemo, useReducer, useState } from "react"
+import {  useContext, useEffect, useMemo, useState } from "react"
+import FatorContext from "../context/FatorContext";
 
-const fatorReducer = (state, action) => {
-    const { type } = action;
-    switch (type) {
-        case 'SET_FIC':
-            return {...state, fic: action.payload };
-        case 'SET_ALVO':
-            return {...state, alvo: action.payload };
-        default:
-            return state;
-    }
-}
 
 const PainelGlicemico = () => {
     const [glicemiaAtual, setGlicemiaAtual] = useState('120');
     const [carbsRefeicao, setCarbsRefeicao] = useState('50');
-    const [controleGlicemico, dispatch] = useReducer(fatorReducer, {
-        fic: 10,
-        alvo: 100
-    });
+    const { controleGlicemico, dispatch } = useContext(FatorContext);
+
     const FSI = 50;
 
     const doseCorretiva = useMemo(() => {
@@ -34,7 +22,7 @@ const PainelGlicemico = () => {
 
     useEffect(() => {
         if (glicemiaAtual < 70) {
-            console.log('ALERTA: Hipoglicemia. Favor consumir carboidratos!');
+            console.warn('ALERTA: Hipoglicemia. Favor consumir carboidratos!');
         }
         console.log(`[Monitoramento] Glicemia alterada para: ${glicemiaAtual}mg/dL`);
     }, [glicemiaAtual]);
